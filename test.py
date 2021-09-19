@@ -7,7 +7,7 @@ from itertools import cycle
 blue_nums = {i: in_blue(str(i)) for i in range(10)}
 green_nums = {i: in_green(str(i)) for i in range(10)}
 
-width, height = 20, 40
+width, height = 200, 40
 
 pixel_grid = []
 for row_num in range(height):

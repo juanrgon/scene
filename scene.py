@@ -43,11 +43,10 @@ class Scene:
             min(self.height(), terminal_height),
         )
 
-        # show the pixel grid,
+        # show the pixel grid
         text_rows = []
         for row in self._pixel_grid[top_left.y : bottom_right.y]:
             text_rows.append("".join(row[top_left.x : bottom_right.x]))
-
         print("\n".join(text_rows))
 
     def height(self) -> int:

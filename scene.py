@@ -33,18 +33,7 @@ class Scene:
 
     def render(self):
         # determine the coordinates of the view window,
-        top_left = self.top_left_point()
-        bottom_right = self.bottom_right_point()
-
-        # show the pixel grid
-        text_rows = []
-        for row in self.pixel_grid[top_left.y : bottom_right.y]:
-            text_rows.append("".join(row[top_left.x : bottom_right.x]))
-
-        return "\n".join(text_rows)
-
-    def top_left_point(self):
-        return Point(
+        top_left = Point(
             x=(
                 self.position.x
                 if self.width() > self.terminal_width()
@@ -57,11 +46,23 @@ class Scene:
             ),
         )
 
-    def bottom_right_point(self):
-        return self.top_left_point() + Point(
+        bottom_right = top_left + Point(
             x=min(self.width(), self.terminal_width()),
             y=min(self.height(), self.terminal_height()),
         )
+
+        # show the pixel grid
+        text_rows = []
+        for row in self.pixel_grid[top_left.y : bottom_right.y]:
+            text_rows.append("".join(row[top_left.x : bottom_right.x]))
+
+        return "\n".join(text_rows)
+
+    def height(self) -> int:
+        return len(self.pixel_grid)
+
+    def width(self) -> int:
+        return len(self.pixel_grid[0])
 
     def terminal_width(self):
         terminal_width, _ = os.get_terminal_size()
@@ -70,12 +71,6 @@ class Scene:
     def terminal_height(self):
         _, terminal_height = os.get_terminal_size()
         return terminal_height
-
-    def height(self) -> int:
-        return len(self.pixel_grid)
-
-    def width(self) -> int:
-        return len(self.pixel_grid[0])
 
     def translate(self, *, x=0, y=0):
         # don't allow horizontal scroll if the scene is narrower than the terminal
@@ -89,10 +84,10 @@ class Scene:
         self.position = Point(
             x=min(
                 max(self.position.x + x, 0),
-                max(self.width() - self.terminal_width(), 0),
+                self.width() - self.terminal_width(),
             ),
             y=min(
                 max(self.position.y + y, 0),
-                max(self.height() - self.terminal_height(), 0),
+                self.height() - self.terminal_height(),
             ),
         )

@@ -24,13 +24,6 @@ class Scene:
     position: Point
     pixel_grid: List[List[str]]
 
-    @classmethod
-    def empty(cls, width: int, height: int) -> "Scene":
-        return Scene(
-            position=Point.origin(),
-            pixel_grid=[[" " for _ in range(width)] for _ in range(height)],
-        )
-
     def render(self):
         # determine the coordinates of the view window,
         top_left = Point(

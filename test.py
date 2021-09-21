@@ -1,10 +1,5 @@
-import curses
-import os
-from scene import Scene, Point
-from itertools import cycle
+from scene import Scene
 from blessed import Terminal
-from pathlib import Path
-
 
 scene = Scene.load("scenes/sparta.txt")
 

@@ -29,10 +29,10 @@ with term.cbreak(), term.hidden_cursor():
         key = term.inkey().code
 
         if key == term.KEY_RIGHT:
-            scene.translate(x=1)
+            scene.scroll(x=1)
         elif key == term.KEY_LEFT:
-            scene.translate(x=-1)
+            scene.scroll(x=-1)
         elif key == term.KEY_UP:
-            scene.translate(y=-1)
+            scene.scroll(y=-1)
         elif key == term.KEY_DOWN:
-            scene.translate(y=1)
+            scene.scroll(y=1)

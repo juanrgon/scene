@@ -72,7 +72,7 @@ class Scene:
         _, terminal_height = os.get_terminal_size()
         return terminal_height
 
-    def translate(self, *, x=0, y=0):
+    def scroll(self, *, x=0, y=0):
         # don't allow horizontal scroll if the scene is narrower than the terminal
         if self.width() <= self.terminal_width():
             x = 0

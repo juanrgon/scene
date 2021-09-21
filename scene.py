@@ -47,6 +47,25 @@ class Scene:
 
         return "\n".join(text_rows)
 
+    @classmethod
+    def load(cls, file: str) -> "Scene":
+        pixel_grid = []
+
+        lines = Path(file).read_text().splitlines()
+
+        # since editors can truncate line space, for convenience make sure all of the
+        # lines are the same length to properly determine the right edge of the screen
+        line_length = max(len(l) for l in lines)
+        lines = [l.ljust(line_length) for l in lines]
+
+        for line in lines:
+            pixel_grid.append([c for c in line])
+
+        return cls(
+            position=Point(0, 0),
+            pixel_grid=pixel_grid
+        )
+
     def height(self) -> int:
         return len(self.pixel_grid)
 

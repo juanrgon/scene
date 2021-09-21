@@ -3,20 +3,10 @@ import os
 from scene import Scene, Point
 from itertools import cycle
 from blessed import Terminal
+from pathlib import Path
 
-width, height = 150, 40
 
-pixel_grid = []
-pixel_grid.append(["*" for _ in range(width)])
-
-for row_num in range(height - 2):
-    nums = [str(i % 10) for i in range(row_num, row_num + (width - 2))]
-    nums = ["*"] + nums + ["*"]
-    pixel_grid.append(nums)
-
-pixel_grid.append(["*" for _ in range(width)])
-
-scene = Scene(position=Point(0, 0), pixel_grid=pixel_grid)
+scene = Scene.load("scenes/sparta.txt")
 
 term = Terminal()
 

@@ -1,7 +1,7 @@
 import curses
 import os
 from scene import Scene, Point
-from terminology import on_blue, on_green, in_blue, in_green
+# from terminology import on_blue, on_green, in_blue, in_green
 from itertools import cycle
 from blessed import Terminal
 

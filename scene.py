@@ -83,11 +83,15 @@ class Scene:
 
         self.position = Point(
             x=min(
+                # Don't allow scrolling past the left edge of the screen
                 max(self.position.x + x, 0),
+                # Don't allow scrolling past the right edge of the screen
                 self.width() - self.terminal_width(),
             ),
             y=min(
+                # Don't allow scrolling above the screen's top edge
                 max(self.position.y + y, 0),
+                # Don't allow scrolling below the screen's bottom edge
                 self.height() - self.terminal_height(),
             ),
         )

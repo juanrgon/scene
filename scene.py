@@ -3,6 +3,8 @@ from typing import List, Dict
 import attr
 from pathlib import Path
 
+from blessed import terminal
+
 
 @attr.define
 class Point:
@@ -30,26 +32,44 @@ class Scene:
         )
 
     def render(self):
-        terminal_width, terminal_height = os.get_terminal_size()
-        # clear the terminal,
-        os.system("clear")
-
         # determine the coordinates of the view window,
-        top_left = Point(
-            self.position.x if self.width() > terminal_width else Point.origin().x,
-            self.position.y if self.height() > terminal_height else Point.origin().y,
-        )
-
-        bottom_right = top_left + Point(
-            min(self.width(), terminal_width),
-            min(self.height(), terminal_height),
-        )
+        top_left = self.top_left_point()
+        bottom_right = self.bottom_right_point()
 
         # show the pixel grid
         text_rows = []
         for row in self.pixel_grid[top_left.y : bottom_right.y]:
             text_rows.append("".join(row[top_left.x : bottom_right.x]))
-        print("\n".join(text_rows))
+
+        return "\n".join(text_rows)
+
+    def top_left_point(self):
+        return Point(
+            x=(
+                self.position.x
+                if self.width() > self.terminal_width()
+                else Point.origin().x
+            ),
+            y=(
+                self.position.y
+                if self.height() > self.terminal_height()
+                else Point.origin().y
+            ),
+        )
+
+    def bottom_right_point(self):
+        return self.top_left_point() + Point(
+            x=min(self.width(), self.terminal_width()),
+            y=min(self.height(), self.terminal_height()),
+        )
+
+    def terminal_width(self):
+        terminal_width, _ = os.get_terminal_size()
+        return terminal_width
+
+    def terminal_height(self):
+        _, terminal_height = os.get_terminal_size()
+        return terminal_height
 
     def height(self) -> int:
         return len(self.pixel_grid)
@@ -58,4 +78,21 @@ class Scene:
         return len(self.pixel_grid[0])
 
     def translate(self, *, x=0, y=0):
-        self.position = self.position + Point(x, y)
+        # don't allow horizontal scroll if the scene is narrower than the terminal
+        if self.width() <= self.terminal_width():
+            x = 0
+
+        # don't allow vertical scroll if the scene is shorter than the terminal
+        if self.height() <= self.terminal_height():
+            y = 0
+
+        self.position = Point(
+            x=min(
+                max(self.position.x + x, 0),
+                max(self.width() - self.terminal_width(), 0),
+            ),
+            y=min(
+                max(self.position.y + y, 0),
+                max(self.height() - self.terminal_height(), 0),
+            ),
+        )

@@ -14,10 +14,6 @@ class Point:
     def __add__(self, other) -> "Point":
         return Point(x=self.x + other.x, y=self.y + other.y)
 
-    @classmethod
-    def origin(cls):
-        return cls(0, 0)
-
 
 @attr.define
 class Scene:
@@ -30,12 +26,12 @@ class Scene:
             x=(
                 self.position.x
                 if self.width() > self.terminal_width()
-                else Point.origin().x
+                else 0
             ),
             y=(
                 self.position.y
                 if self.height() > self.terminal_height()
-                else Point.origin().y
+                else 0
             ),
         )
 

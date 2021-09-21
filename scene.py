@@ -29,18 +29,6 @@ class Scene:
             pixel_grid=[[" " for _ in range(width)] for _ in range(height)],
         )
 
-    @classmethod
-    def load(cls, scene_file) -> "Scene":
-        exported_scene: Dict
-        return cls(
-            position=exported_scene["position"],
-            pixel_grid=exported_scene["pixel_grid"],
-        )
-
-    def export(self, destination: str) -> Dict:
-        Path("")
-        return {"position": self.position, "pixel_grid": self.pixel_grid}
-
     def render(self):
         terminal_width, terminal_height = os.get_terminal_size()
         # clear the terminal,
